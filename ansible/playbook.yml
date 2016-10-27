@@ -1,0 +1,12 @@
+---
+-
+    hosts: all
+    vars_files:
+        - vars/main.yml
+    roles:
+        # make sure these roles have been added to requirements.yml so they'll be automatically installed.
+        - geerlingguy.apache
+        - geerlingguy.php
+        - geerlingguy.mysql
+    become: true
+...
