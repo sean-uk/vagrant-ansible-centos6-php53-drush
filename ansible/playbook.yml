@@ -7,6 +7,7 @@
     vars:
         # remove the 000-default apache site.
         apache_remove_default_vhost: true
+        mysql_root_password: root
         php_packages:
             # you can use mod_php for apache or php-fpm (https://galaxy.ansible.com/geerlingguy/php/#readme)
             - libapache2-mod-php
@@ -15,6 +16,7 @@
         - geerlingguy.apache
         - geerlingguy.php
         - geerlingguy.mysql
+        - geerlingguy.php-mysql
     become: true
     tasks:
         -
@@ -32,4 +34,14 @@
                 state: directory
             with_items: "{{ apache_vhosts }}"
             when: item['documentroot'] is defined
+            
+        -
+            name: chown the web root to the www-data group
+            file:
+                path: /var/www
+                state: directory
+                group: www-data
+                mode: 0775
+                recurse: true
+            become: true
 ...
