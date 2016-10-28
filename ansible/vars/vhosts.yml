@@ -1,7 +1,19 @@
 ---
+# [apache vars](https://galaxy.ansible.com/geerlingguy/apache/#readme)
 apache_vhosts:
     -
         servername: "localhost"
         serveralias: "www.localhost"
         documentroot: "/var/www/localhost"
+        
+# [mysql vars](https://galaxy.ansible.com/geerlingguy/mysql/#readme)
+mysql_databases:
+    -
+        name: local_db
+mysql_users:
+    -
+        name: local_db_user
+        host: "%"
+        password: local_db_user
+        priv: "local_db.*:ALL"
 ...
