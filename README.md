@@ -9,10 +9,20 @@ I'm opting to use the option of installing ansible on the box itself rather then
 
 When you've added the ansible provisioner config to your Vagrantfile you'l need to set
 
-* `"ansible.playbook"` to be `"ansible/playbook.yml"`, and
-* `"ansible.galaxy_role_file"` to `"ansible/requirements.yml"`
+* `ansible.playbook` to be `"ansible/playbook.yml"`, and
+* `ansible.galaxy_role_file` to `"ansible/requirements.yml"`
 
-(more [here](https://www.vagrantup.com/docs/provisioning/ansible_common.html))
+ie; 
+
+    Vagrant.configure("2") do |config|
+      # Run Ansible from the Vagrant VM
+      config.vm.provision "ansible_local" do |ansible|
+        ansible.playbook = "ansible/playbook.yml"
+        ansible.galaxy_role_file = "ansible/requirements.yml"s
+      end
+    end
+
+(more [here](https://www.vagrantup.com/docs/provisioning/ansible.html))
 
 ## Network
 

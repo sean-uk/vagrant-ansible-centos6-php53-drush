@@ -3,10 +3,29 @@
     hosts: all
     vars_files:
         - vars/main.yml
+        - vars/vhosts.yml
+    vars:
+        # remove the 000-default apache site.
+        apache_remove_default_vhost: true
     roles:
         # make sure these roles have been added to requirements.yml so they'll be automatically installed.
         - geerlingguy.apache
         - geerlingguy.php
         - geerlingguy.mysql
     become: true
+    tasks:
+        -
+            name: remove the default /var/www/html folder
+            file:
+                path: /var/www/html
+                state: absent
+            become: true
+            
+        -
+            name: create web root folders for the apache vhosts
+            file:
+                path: "{{ item['documentroot'] }}"
+                state: directory
+            with_items: "{{ apache_vhosts }}"
+            when: item['documentroot'] is defined
 ...

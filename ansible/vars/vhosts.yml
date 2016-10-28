@@ -1,0 +1,7 @@
+---
+apache_vhosts:
+    -
+        servername: "vanilla.dev"
+        serveralias: "www.vanilla.dev"
+        documentroot: "/var/www/vanilla"
+...
