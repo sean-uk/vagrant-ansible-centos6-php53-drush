@@ -7,6 +7,9 @@
     vars:
         # remove the 000-default apache site.
         apache_remove_default_vhost: true
+        php_packages:
+            # you can use mod_php for apache or php-fpm (https://galaxy.ansible.com/geerlingguy/php/#readme)
+            - libapache2-mod-php
     roles:
         # make sure these roles have been added to requirements.yml so they'll be automatically installed.
         - geerlingguy.apache
@@ -22,6 +25,7 @@
             become: true
             
         -
+            # (the apache vhosts are defined in vars/vhosts.yml)
             name: create web root folders for the apache vhosts
             file:
                 path: "{{ item['documentroot'] }}"

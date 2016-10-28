@@ -18,7 +18,7 @@ ie;
       # Run Ansible from the Vagrant VM
       config.vm.provision "ansible_local" do |ansible|
         ansible.playbook = "ansible/playbook.yml"
-        ansible.galaxy_role_file = "ansible/requirements.yml"s
+        ansible.galaxy_role_file = "ansible/requirements.yml"
       end
     end
 
@@ -28,6 +28,30 @@ ie;
 
 The simplest thing to do is to map a port on the host machine to one on the VM
 by putting a line like this in your Vagrantfile: `config.vm.network "forwarded_port", guest: 80, host: 8080`.  
-In that case you'd be able to reach your VM on localhost: 8080
+In that case you'd be able to reach your VM on localhost:8080
 
 [This fedora magazine article](https://fedoramagazine.org/using-ansible-provision-vagrant-boxes/) will provide some context.
+
+If you want access via hostname ie; myproject.dev, add that as a serveralias in `ansible\vars\vhosts.yml` and then add
+that domain to your hosts file.
+
+## Sync'ed folder
+
+The idea is to have your project folder, with this project checked out into a subfolder for your dev VM.
+Your setup would look something like this:
+
+* MyProject
+ * _this folder_
+  * README.md
+  * ansible
+  * ...
+ * _data_ (web root)
+
+To then sync the content of _data_ with /var/www, add a line like this to your Vagrantfile:
+`config.vm.synced_folder "../data", "/var/www"`
+(in the `|config|` section as before)
+
+### Unison
+
+Performance problems with the sync between Windows hosts and Linux guests are well known.   
+Consider using the [vagrant unison plugin](https://github.com/mrdavidlaing/vagrant-unison)

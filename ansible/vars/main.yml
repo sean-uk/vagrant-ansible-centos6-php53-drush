@@ -1,3 +1,4 @@
 ---
+# set values here for the vars in your roles, for instance those in the [geerlingguy.php role](https://galaxy.ansible.com/geerlingguy/php/#readme)
 apache_listen_port: 80
 ...
