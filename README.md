@@ -33,7 +33,12 @@ In that case you'd be able to reach your VM on localhost:8080
 [This fedora magazine article](https://fedoramagazine.org/using-ansible-provision-vagrant-boxes/) will provide some context.
 
 If you want access via hostname ie; myproject.dev, add that as a serveralias in `ansible\vars\vhosts.yml` and then add
-that domain to your hosts file.
+that domain to your hosts file. 
+
+You can give your box a static IP using the ["private_network" setting in the Vagrantfile](https://www.vagrantup.com/docs/networking/private_network.html),
+ie; `config.vm.network "private_network", ip: "192.168.33.10"`.
+*There is a known issue using this setting in Vagrant 1.8.1 on ubuntu xenial. More [here](https://askubuntu.com/questions/760871/network-settings-fail-for-ubuntu-xenial64-vagrant-box).*
+Try ubuntu/trusty64 as your base box instead.
 
 ## Sync'ed folder
 
