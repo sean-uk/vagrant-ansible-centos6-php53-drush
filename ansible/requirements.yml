@@ -3,6 +3,8 @@
 # This file needs to be referenced in your ansible_local config in your Vagrantfile.
 - src: geerlingguy.apache
 - src: geerlingguy.php
+- src: ontic.composer
 - src: geerlingguy.mysql
 - src: geerlingguy.php-mysql
+- src: geerlingguy.drush
 ...

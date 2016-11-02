@@ -10,19 +10,51 @@
         mysql_root_password: root
         php_packages:
             # you can use mod_php for apache or php-fpm (https://galaxy.ansible.com/geerlingguy/php/#readme)
-            - libapache2-mod-php
+            - php-fpm
+            
+            # you don't seem to get this by default on centos / geerlingguy.php
+            - php-cli
+            
+            # - php-pecl-zendopcache
+            - php-domxml-php4-php5
+            - php-pecl-apcu
+            
+        # drush 7.x is the last version that supports php 5.3.x: http://docs.drush.org/en/master/install/#drupal-compatibility
+        drush_version: 7.x
+        
+        apache_group: apache
+            
+    pre_tasks:
+        -
+            # geerlingguy.apache needs this package.
+            name: install libselinux-python
+            yum:
+                name: libselinux-python
+                update_cache: true
+            become: true
+        
     roles:
         # make sure these roles have been added to requirements.yml so they'll be automatically installed.
         - geerlingguy.apache
         - geerlingguy.php
+        - ontic.composer
         - geerlingguy.mysql
         - geerlingguy.php-mysql
+        - geerlingguy.drush
     become: true
     tasks:
         -
             name: remove the default /var/www/html folder
             file:
                 path: /var/www/html
+                state: absent
+            become: true
+            
+        -
+            name: unset the default /var/www/html folder from the apache config file
+            lineinfile:
+                dest: /etc/httpd/conf/httpd.conf
+                line: DocumentRoot "/var/www/html"
                 state: absent
             become: true
             
@@ -40,7 +72,7 @@
             file:
                 path: /var/www
                 state: directory
-                group: www-data
+                group: "{{ apache_group }}"
                 mode: 0775
                 recurse: true
             become: true
